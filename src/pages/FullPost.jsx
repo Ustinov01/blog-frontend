@@ -4,6 +4,7 @@ import { Post } from "../components/Post";
 import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 import { useParams } from "react-router-dom";
+import Markdown from "react-markdown";
 
 export const FullPost = () => {
   const [data, setData] = useState();
@@ -23,12 +24,14 @@ export const FullPost = () => {
   if (isLoading) {
     return <Post isLoading={isLoading} isFullPost />;
   }
+
+  console.log(data);
   return (
     <>
       <Post
         id={data._id}
         title={data.title}
-        imageUrl={data.imageUrl ? data.imageUrl : null}
+        imageUrl={`http://localhost:4444${data.imageUrl}`}
         user={data.user}
         createdAt={data.createdAt}
         viewsCount={data.viewCount}
@@ -36,7 +39,7 @@ export const FullPost = () => {
         tags={data.tags}
         isFullPost
       >
-        <p>{data.text}</p>
+        <Markdown>{data.text}</Markdown>
       </Post>
       <CommentsBlock
         items={[

@@ -14,6 +14,9 @@ import { ContactSupportOutlined } from "@mui/icons-material";
 export const Home = () => {
   const { posts, tags } = useSelector((state) => state.posts);
   const dispath = useDispatch();
+
+  const userData = useSelector((state) => state.auth.data);
+
   useEffect(() => {
     dispath(fetchPosts());
     dispath(fetchTags());
@@ -42,13 +45,15 @@ export const Home = () => {
                 id={obj._id}
                 title={obj.title}
                 key={obj.id}
-                imageUrl={obj.imageUrl}
+                imageUrl={
+                  obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : null
+                }
                 user={obj.user}
                 createdAt={obj.createdAt}
                 viewsCount={obj.viewCount}
                 commentsCount={3}
                 tags={obj.tags}
-                isEditable
+                isEditable={userData?._id === obj.user._id}
               />
             )
           )}

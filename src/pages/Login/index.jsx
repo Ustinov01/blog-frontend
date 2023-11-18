@@ -15,8 +15,7 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    setError,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       email: "",
@@ -25,13 +24,24 @@ export const Login = () => {
     mode: "onChange",
   });
 
+  const onSubmit = async (values) => {
+    const data = await dispatch(fetchAuth(values));
+
+    if (!data.payload) {
+      alert("не удалось авторизоваться");
+    }
+
+    if ("token" in data.payload) {
+      window.localStorage.setItem("token", data.payload.token);
+    } else {
+      alert("не удалось авторизоваться");
+    }
+  };
+
   if (isAuth) {
     return <Navigate to="/" />;
   }
 
-  const onSubmit = (values) => {
-    dispatch(fetchAuth(values));
-  };
   return (
     <Paper classes={{ root: styles.root }}>
       <Typography classes={{ root: styles.title }} variant="h5">
